@@ -8,13 +8,16 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { GetPostsDto } from './dto/get-posts.dto';
+import { CreatePostDto } from './dto/create-post.dto';
+import { UpdatePostsDto } from './dto/update-post.dto';
 
 @Controller('posts')
 export class PostsController {
   @Get()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  getAllPosts(@Query() query: any) {
-    return 'This action return all post ' + query.status;
+  getAllPosts(@Query() getPostsDto: GetPostsDto) {
+    return 'This action return all post ';
   }
 
   @Get(':id')
@@ -23,13 +26,14 @@ export class PostsController {
   }
 
   @Post()
-  createPost(@Body() post: any) {
-    return `This action create a post ${post}`;
+  createPost(@Body() createPostDto: CreatePostDto) {
+    createPostDto.body;
+    return `This action create a post`;
   }
 
   @Patch(':id')
-  updatePost(@Param('id') id: string, @Body() post: any) {
-    return `This action update post ${id} ${post}`;
+  updatePost(@Param('id') id: string, @Body() updatePostsDto: UpdatePostsDto) {
+    return `This action update post ${id} ${updatePostsDto}`;
   }
 
   @Delete(':id')
