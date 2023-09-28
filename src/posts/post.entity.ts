@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { PostStatus } from './post-status.enum';
+import { Category } from 'src/categories/category.entity';
 
 @Entity()
 export class Post {
@@ -14,4 +15,7 @@ export class Post {
 
   @Column()
   status: PostStatus;
+
+  @ManyToOne(() => Category, (category: Category) => category.posts)
+  category: Category;
 }

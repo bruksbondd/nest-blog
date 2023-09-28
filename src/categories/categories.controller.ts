@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { CategoriesService } from './categories.service';
 import { Category } from './category.entity';
@@ -12,5 +12,10 @@ export class CategoriesController {
     @Body() createCategoryDto: CreateCategoryDto,
   ): Promise<Category> {
     return this.categoriesService.createCategory(createCategoryDto);
+  }
+
+  @Get(':id')
+  getPostByID(@Param('id') id: string): Promise<Category[]> {
+    return this.categoriesService.getCategoryById(id);
   }
 }

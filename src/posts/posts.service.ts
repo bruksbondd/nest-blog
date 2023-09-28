@@ -5,10 +5,14 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostsDto } from './dto/update-post.dto';
 import { PostRepository } from './post.repository';
 import { Post } from './post.entity';
+import { CategoriesService } from 'src/categories/categories.service';
 
 @Injectable()
 export class PostsService {
-  constructor(private readonly postsRepository: PostRepository) {}
+  constructor(
+    private readonly postsRepository: PostRepository,
+    private categoriesService: CategoriesService,
+  ) {}
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getAllPosts(@Query() getPostsDto: GetPostsDto): Promise<Post[]> {
@@ -16,8 +20,11 @@ export class PostsService {
   }
 
   async getPostById(@Param('id') id: string): Promise<Post[]> {
-    const post = await this.postsRepository.findBy({
-      id: id,
+    const post = await this.postsRepository.find({
+      where: {
+        id,
+      },
+      relations: ['category'],
     });
 
     if (!post.length) {
@@ -27,8 +34,12 @@ export class PostsService {
     return post;
   }
 
-  createPost(@Body() createPostDto: CreatePostDto): Promise<Post> {
+  async createPost(@Body() createPostDto: CreatePostDto): Promise<Post> {
     const newPost = this.postsRepository.create(createPostDto);
+    const category = await this.categoriesService.getCategoryById(
+      createPostDto.categoryId,
+    );
+    newPost.category = category[0];
     return this.postsRepository.save(newPost);
   }
 
