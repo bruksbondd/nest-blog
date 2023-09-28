@@ -11,33 +11,35 @@ import {
 import { GetPostsDto } from './dto/get-posts.dto';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostsDto } from './dto/update-post.dto';
+import { PostsService } from './posts.service';
 
 @Controller('posts')
 export class PostsController {
+  constructor(private readonly postsService: PostsService) {}
+
   @Get()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getAllPosts(@Query() getPostsDto: GetPostsDto) {
-    return 'This action return all post ';
+    return this.postsService.getAllPosts(getPostsDto);
   }
 
   @Get(':id')
   getPostByID(@Param('id') id: string) {
-    return `This action returns a post by id ${id}`;
+    return this.postsService.getPostByID(id);
   }
 
   @Post()
   createPost(@Body() createPostDto: CreatePostDto) {
-    createPostDto.body;
-    return `This action create a post`;
+    return this.postsService.createPost(createPostDto);
   }
 
   @Patch(':id')
   updatePost(@Param('id') id: string, @Body() updatePostsDto: UpdatePostsDto) {
-    return `This action update post ${id} ${updatePostsDto}`;
+    return this.postsService.updatePost(id, updatePostsDto);
   }
 
   @Delete(':id')
   deletePost(@Param('id') id: string) {
-    return `This action delete post ${id}`;
+    return this.postsService.deletePost(id);
   }
 }
