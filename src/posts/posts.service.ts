@@ -3,12 +3,15 @@ import { Body, Param, Query } from '@nestjs/common';
 import { GetPostsDto } from './dto/get-posts.dto';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostsDto } from './dto/update-post.dto';
+import { PostRepository } from './post.repository';
 
 @Injectable()
 export class PostsService {
+  constructor(private readonly postsRepository: PostRepository) {}
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getAllPosts(@Query() getPostsDto: GetPostsDto) {
-    return 'This action return all post ';
+    return this.postsRepository.find();
   }
 
   getPostByID(@Param('id') id: string) {
@@ -17,6 +20,7 @@ export class PostsService {
 
   createPost(@Body() createPostDto: CreatePostDto) {
     createPostDto.body;
+    this.postsRepository.create(createPostDto);
     return `This action create a post`;
   }
 
