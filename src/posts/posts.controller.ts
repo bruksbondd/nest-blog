@@ -20,7 +20,7 @@ export class PostsController {
 
   @Get()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  getAllPosts(@Query() getPostsDto: GetPostsDto) {
+  getAllPosts(@Query() getPostsDto: GetPostsDto): Promise<PostEntity[]> {
     return this.postsService.getAllPosts(getPostsDto);
   }
 

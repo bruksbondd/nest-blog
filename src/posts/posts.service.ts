@@ -11,8 +11,8 @@ export class PostsService {
   constructor(private readonly postsRepository: PostRepository) {}
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  getAllPosts(@Query() getPostsDto: GetPostsDto) {
-    return this.postsRepository.find();
+  getAllPosts(@Query() getPostsDto: GetPostsDto): Promise<Post[]> {
+    return this.postsRepository.getPosts(getPostsDto);
   }
 
   async getPostById(@Param('id') id: string): Promise<Post[]> {
